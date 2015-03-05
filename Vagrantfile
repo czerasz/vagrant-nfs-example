@@ -47,12 +47,15 @@ Vagrant.configure(2) do |config|
 
   # Enable provisioning with bash shell script
   config.vm.provision "shell", path: "provisioners/shell/init.sh"
+  config.vm.provision "shell", path: "provisioners/shell/base.sh"
 
   config.vm.define "host", primary: true do |local_config|
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
     local_config.vm.network "private_network", ip: "192.168.34.11"
     local_config.vm.hostname = 'host.nfs'
+
+    local_config.vm.provision "shell", path: "provisioners/shell/host.sh"
   end
 
   config.vm.define "client" do |local_config|
@@ -60,6 +63,8 @@ Vagrant.configure(2) do |config|
     # using a specific IP.
     local_config.vm.network "private_network", ip: "192.168.34.12"
     local_config.vm.hostname = 'client.nfs'
+
+    local_config.vm.provision "shell", path: "provisioners/shell/client.sh"
   end
 
 
